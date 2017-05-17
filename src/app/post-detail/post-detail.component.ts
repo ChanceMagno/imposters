@@ -1,10 +1,12 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { MaterializeAction } from 'angular2-materialize';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { Post } from '../post.model';
 import { PostService } from '../post.service';
 import { AuthService } from '../auth.service';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 
@@ -21,13 +23,19 @@ export class PostDetailComponent implements OnInit {
   editClicked: any = null;
   ownerMode: any = null;
   warnAction = new EventEmitter;
+  category: string[] = ["Code Snippet", "Job Tips", "Cool Tech"];
+  editPostForm: FormGroup;
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private location: Location, private postService: PostService) { }
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private route: ActivatedRoute, private location: Location, private postService: PostService) { }
 
   ngOnInit() {
     this.route.params.forEach((urlParameters) => {
       this.postId = urlParameters['id'];
     });
+
+
+
     this.postService.getPostById(this.postId).subscribe(postToDisplay => {
       this.postToDisplay = postToDisplay;
 
@@ -37,6 +45,15 @@ export class PostDetailComponent implements OnInit {
       this.checkOwner()
     });
   });
+  }
+
+
+  instantiatForm(){
+    this.editPostForm = this.fb.group({
+    title: ['', Validators.required],
+    content: ['', Validators.required],
+    category: ['', Validators.required],
+    })
   }
 
   warnModal(){
@@ -55,9 +72,25 @@ export class PostDetailComponent implements OnInit {
   showEdit(){
     if(this.editClicked === null){
       this.editClicked = true;
+      this.instantiatForm();
+      this.setForm(this.postToDisplay.category, this.postToDisplay.title, this.postToDisplay.content);
     } else {
       this.editClicked = null;
     }
+  }
+
+
+  setForm(category: string, title: string, content: string){
+    this.editPostForm.controls['category'].setValue(category);
+    this.editPostForm.controls['title'].setValue(title);
+    this.editPostForm.controls['content'].setValue(content);
+  }
+
+
+  editPost(){
+    var {title, content, category, userId} = this.editPostForm.value;
+      var updatedPost = new Post(title, content, category, this.postToDisplay.userId);
+      this.postService.updatePost(this.postId, updatedPost);
   }
 
 }

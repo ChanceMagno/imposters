@@ -12,33 +12,31 @@
       <li class="waves-effect waves-light"><a (click)="warnDelete()"><i class="material-icons">delete</i></a></li>
     </ul>
   </div>
-<div *ngIf="editClicked"class="row addForm">
-  <form class="col s12" >
+<div *ngIf="editClicked"class="row addForm" >
+  <form class="col s12" [formGroup]="editPostForm">
     <div class="row">
 
     <div class="input-field">
-      <select materialize="material_select" [materializeSelectOptions]="type">
-         <option value="postToDisplay?.category" selected>Choose your Category</option>
-         <option *ngFor="let name of category" [value]="name">{{name}}</option>
+      <select materialize="material_select" [materializeSelectOptions]="type" formControlName="category" >
+         <option *ngFor="let name of category" [value]="name" >{{name}}</option>
       </select>
     </div>
 
       <div class="input-field col s12">
-        <textarea id="title" class="materialize-textarea" value='postToDisplay?.title'></textarea>
-        <label for="title">Title</label> 
+        <textarea formControlName="title" id="title" class="materialize-textarea" value='postToDisplay?.title'></textarea>
+        <label class="active" for="title">Title</label> 
       </div>
-
     </div>
     <br>
     <div class="row">
       <div class="input-field col s12">
-        <textarea rows="25" id="content" type="content" class="validate materialize-textarea" value='postToDisplay?.content'data-length="500"></textarea>
+        <textarea formControlName="content" rows="25" id="content" type="content" class="validate materialize-textarea" data-length="500" ></textarea>
         <label for="content">Content</label>
       </div>
     </div>
     <br>
     <div class="row formButton">
-      <button class="btn waves-effect waves-light center" (click)="addPost()">Add Post</button>
+      <button class="btn waves-effect waves-light center" (click)="editPost()">Add Post</button>
     </div>
   </form>
 </div>
