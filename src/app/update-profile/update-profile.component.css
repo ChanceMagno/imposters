@@ -6,3 +6,12 @@ i {
 .iconLabel {
   margin: 0 30px;
 }
+
+
+button, button:focus {
+  background-color: #435f5f;
+}
+
+button:hover {
+  background: #8ea9a9;
+}
