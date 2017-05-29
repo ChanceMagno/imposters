@@ -64,7 +64,7 @@ This application is built to work with a Firebase database. If you'd like to enj
 * Visit our [Trello board](https://trello.com/b/Y54cdMiA) for a visualization of our organizational methods and application structure.
 
 ## The Bugs
-We'll see.
+Profile page text not contained in boxes
 
 ## The Contact Details
 Questions? Concerns? Suggestions? Reach out to us via github:
